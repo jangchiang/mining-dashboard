@@ -1,18 +1,23 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
-export default {
+const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx}", // Adjust paths to your project
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      animation: {
+        'spin-3d': 'spin3D 2s linear infinite',
+      },
+      keyframes: {
+        spin3D: {
+          '0%': { transform: 'rotateX(0deg) rotateY(0deg)' },
+          '100%': { transform: 'rotateX(360deg) rotateY(360deg)' },
+        },
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;
