@@ -1,3 +1,4 @@
+// src/app/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -37,7 +38,8 @@ export default function DashboardPage() {
     );
   }
 
-  const workers = data.user.workers || {}; // Fallback to empty object if workers is null or undefined
+  // Get workers data directly from the root level of the API response
+  const workers = data.workers || {};
 
   const formatNumberWithColor = (value: number, isPositive: boolean) => {
     const colorClass = isPositive ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
@@ -75,13 +77,13 @@ export default function DashboardPage() {
                 <div>
                   <span className="text-gray-500 dark:text-gray-400">Hash Power:</span>
                   <span className="ml-2 text-blue-600 dark:text-blue-400">
-                    {(data.user.hash_rate).toFixed(1)} MH/s
+                    {(data.user.hash_rate / 1e3).toFixed(2)} MH/s
                   </span>
                 </div>
                 <div>
                   <span className="text-gray-500 dark:text-gray-400">Share Rate:</span>
                   <span className="ml-2 text-blue-600 dark:text-blue-400">
-                    {Math.round(data.user.total_work / (60 * 24))} shares/min
+                    {Math.round(parseInt(data.user.total_work) / (60 * 24))} shares/min
                   </span>
                 </div>
               </div>
@@ -107,7 +109,6 @@ export default function DashboardPage() {
       </header>
 
       <main className="container mx-auto px-4 sm:px-6 py-8">
-
         {/* Network Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
@@ -126,6 +127,12 @@ export default function DashboardPage() {
                 ((data.network.next_difficulty - data.network.difficulty) / data.network.difficulty * 100),
                 data.network.next_difficulty > data.network.difficulty
               )}
+            </div>
+            <div className="text-sm">
+              <span className="text-gray-500 dark:text-gray-400">Reset block time: </span>
+              <span className="text-gray-900 dark:text-white">
+                {(data.network.retarget_time / 60).toFixed(1)} min
+              </span>
             </div>
           </div>
 
@@ -217,7 +224,12 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Last 30 Days Summary and Chart */}
+        {/* Worker Stats */}
+        <div className="mb-6">
+          <WorkerStats workers={workers} />
+        </div>
+
+        {/* Mining Chart */}
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
             <MiningChart timeRange={timeRange} data={data} />
