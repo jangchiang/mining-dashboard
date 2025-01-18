@@ -3,8 +3,8 @@ import React from 'react';
 
 interface Worker {
   connected: boolean;
-  hash_rate: number;
-  hash_rate_24h: number;
+  hash_rate: number | string; // Updated to handle number or string
+  hash_rate_24h: number | string;
   valid_shares: number;
   stale_shares: number;
   invalid_shares: number;
@@ -23,6 +23,15 @@ interface WorkerStatsProps {
 export const WorkerStats: React.FC<WorkerStatsProps> = ({ workers }) => {
   const workerEntries = Object.entries(workers);
 
+  const formatHashRate = (hashRate: number | string): string =>
+    `${parseFloat(hashRate as string).toFixed(2)} MH/s`;
+
+  const formatRewards = (rewards: number): string =>
+    rewards.toFixed(8);
+
+  const formatShares = (shares: number): string =>
+    shares.toLocaleString();
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -39,10 +48,10 @@ export const WorkerStats: React.FC<WorkerStatsProps> = ({ workers }) => {
                 Connected
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Hash Rate (MH/s)
+                Hash Rate
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                24h Hash Rate (MH/s)
+                24h Hash Rate
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Valid Shares
@@ -71,25 +80,25 @@ export const WorkerStats: React.FC<WorkerStatsProps> = ({ workers }) => {
                   {worker.connected ? 'Yes' : 'No'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-blue-600 dark:text-blue-400">
-                  {worker.hash_rate.toFixed(2)}
+                  {formatHashRate(worker.hash_rate)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-blue-600 dark:text-blue-400">
-                  {worker.hash_rate_24h.toFixed(2)}
+                  {formatHashRate(worker.hash_rate_24h)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-green-600 dark:text-green-400">
-                  {worker.valid_shares.toLocaleString()}
+                  {formatShares(worker.valid_shares)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-yellow-600 dark:text-yellow-400">
-                  {worker.stale_shares.toLocaleString()}
+                  {formatShares(worker.stale_shares)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-red-600 dark:text-red-400">
-                  {worker.invalid_shares.toLocaleString()}
+                  {formatShares(worker.invalid_shares)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-blue-600 dark:text-blue-400">
-                  {worker.rewards.toFixed(8)}
+                  {formatRewards(worker.rewards)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-yellow-600 dark:text-yellow-400">
-                  {worker.rewards_doge.toFixed(2)}
+                  {formatRewards(worker.rewards_doge)}
                 </td>
               </tr>
             ))}

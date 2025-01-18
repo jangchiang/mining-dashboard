@@ -217,14 +217,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Worker Stats */}
-        <div className="mb-6">
-          <WorkerStats workers={workers} />
-        </div>
-
         {/* Last 30 Days Summary and Chart */}
         <div className="space-y-6">
-          <Last30DaysTable data={data} />
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
             <MiningChart timeRange={timeRange} data={data} />
           </div>

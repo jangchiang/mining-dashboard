@@ -13,9 +13,6 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     domains: ['localhost'], // Allow images from 'localhost'
   },
-  server: {
-    port: 3004, // Change the default port to 3004
-  },
 };
 
 export default nextConfig;
