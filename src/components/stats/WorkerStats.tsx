@@ -63,7 +63,7 @@ export const WorkerStats: React.FC<WorkerStatsProps> = ({ workers }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-gray-500 dark:text-gray-400 text-sm font-medium">Worker Statistics</h2>
+        <h2 className="text-black dark:text-white text-xl font-medium">Worker Statistics</h2>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -97,7 +97,10 @@ export const WorkerStats: React.FC<WorkerStatsProps> = ({ workers }) => {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {workerEntries.map(([workerName, worker]) => (
-              <tr key={workerName} className="hover:bg-gray-50 dark:hover:bg-gray-750">
+              <tr 
+                key={workerName} 
+                className="transition-colors duration-150 hover:bg-gray-50/50 dark:hover:bg-gray-700/50"
+              >
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   {workerName}
                 </td>

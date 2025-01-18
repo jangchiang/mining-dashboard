@@ -13,6 +13,20 @@ export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>('1D');
   const { data, error, isLoading } = useMiningData(timeRange);
 
+  const formatBlockTime = (seconds: number): string => {
+    const days = Math.floor(seconds / (24 * 60 * 60));
+    const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+    const minutes = Math.floor((seconds % (60 * 60)) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    return `${days} days ${hours} hrs ${minutes} min`;
+  };
+
+  const formatNumberWithColor = (value: number, isPositive: boolean) => {
+    const colorClass = isPositive ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
+    return <span className={colorClass}>{isPositive ? '+' : ''}{value.toFixed(2)}%</span>;
+  };
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
@@ -38,13 +52,7 @@ export default function DashboardPage() {
     );
   }
 
-  // Get workers data directly from the root level of the API response
   const workers = data.workers || {};
-
-  const formatNumberWithColor = (value: number, isPositive: boolean) => {
-    const colorClass = isPositive ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
-    return <span className={colorClass}>{isPositive ? '+' : ''}{value.toFixed(2)}%</span>;
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -54,7 +62,6 @@ export default function DashboardPage() {
           <div className="flex flex-col py-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <h1 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-0">Mining Dashboard</h1>
-              {/* Network Difficulty */}
               <div className="text-sm text-gray-500 dark:text-gray-400">
                 Network Difficulty:
                 <span className="ml-2 text-gray-900 dark:text-white font-medium">
@@ -112,10 +119,10 @@ export default function DashboardPage() {
         {/* Network Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
-            <h2 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">
+            <h2 className="text-black dark:text-white text-2xl font-medium mb-2">
               Network Difficulty
             </h2>
-            <div className="text-3xl text-gray-900 dark:text-white mb-2">
+            <div className="text-2xl text-gray-900 dark:text-white mb-3">
               {(data.network.difficulty / 1e6).toFixed(2)}M
             </div>
             <div className="text-sm">
@@ -131,13 +138,13 @@ export default function DashboardPage() {
             <div className="text-sm">
               <span className="text-gray-500 dark:text-gray-400">Reset block time: </span>
               <span className="text-gray-900 dark:text-white">
-                {(data.network.retarget_time / 60).toFixed(1)} min
+                {formatBlockTime(data.network.retarget_time)}
               </span>
             </div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
-            <h2 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">
+            <h2 className="text-black dark:text-white text-2xl font-medium mb-4">
               Network Stats
             </h2>
             <div className="space-y-4">
@@ -160,7 +167,7 @@ export default function DashboardPage() {
         {/* Mining Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
-            <h2 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">
+            <h2 className="text-black dark:text-white text-2xl font-medium mb-4">
               LTC Stats
             </h2>
             <div className="space-y-4">
@@ -192,7 +199,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
-            <h2 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">
+            <h2 className="text-black dark:text-white text-2xl font-medium mb-4">
               DOGE Stats
             </h2>
             <div className="space-y-4">
