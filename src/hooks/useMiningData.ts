@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { TimeRange } from '@/types/mining';
 
-const API_KEY = 'fb0475ac189acd566760ca9c50c890e0';
+const API_KEY = '';
 const API_URL = 'https://www.litecoinpool.org/api';
 
 interface DailyStats {
